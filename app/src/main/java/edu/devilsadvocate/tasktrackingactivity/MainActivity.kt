@@ -1,39 +1,64 @@
 package edu.devilsadvocate.tasktrackingactivity
 
+import android.app.Activity
+import android.content.Intent
 import android.os.Bundle
-import com.google.android.material.snackbar.Snackbar
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
-import android.view.Menu
-import android.view.MenuItem
-
+import androidx.lifecycle.Observer
+import androidx.lifecycle.ViewModelProvider
+import androidx.recyclerview.widget.LinearLayoutManager
 import kotlinx.android.synthetic.main.activity_main.*
+import java.time.Instant
+import java.util.*
 
 class MainActivity : AppCompatActivity() {
+
+    private lateinit var taskViewModel: TaskViewModel
+
+    private val newTaskActivityRequestCode = 1
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
-        setSupportActionBar(toolbar)
 
-        fab.setOnClickListener { view ->
-            Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-                .setAction("Action", null).show()
+        val adapter = TaskListAdapter(this)
+        recyclerview.adapter = adapter
+        recyclerview.layoutManager = LinearLayoutManager(this)
+
+        taskViewModel = ViewModelProvider(this).get(TaskViewModel::class.java)
+
+        taskViewModel.allTasks.observe(this, Observer { tasks ->
+            tasks?.let { adapter.setTasks(it) }
+        })
+
+        fab_add_new_task.setOnClickListener {
+            val intent = Intent(this@MainActivity, NewTaskActivity::class.java)
+            startActivityForResult(intent, newTaskActivityRequestCode)
         }
     }
 
-    override fun onCreateOptionsMenu(menu: Menu): Boolean {
-        // Inflate the menu; this adds items to the action bar if it is present.
-        menuInflater.inflate(R.menu.menu_main, menu)
-        return true
-    }
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
 
-    override fun onOptionsItemSelected(item: MenuItem): Boolean {
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
-        return when (item.itemId) {
-            R.id.action_settings -> true
-            else -> super.onOptionsItemSelected(item)
+        if( requestCode == newTaskActivityRequestCode && resultCode == Activity.RESULT_OK) {
+            data?.run {
+                val taskName = getStringExtra(NewTaskActivity.EXTRA_TASK_NAME)
+                val taskDesc = getStringExtra(NewTaskActivity.EXTRA_TASK_DESC)
+                val task = Task(id = null, taskName = taskName ?: "", taskDescription = taskDesc ?: "", taskCompletionStatus = false, taskTargetCompletionDate = Date.from(
+                    Instant.now()))
+                taskViewModel.run {
+                    insert(task)
+                }
+            }
+        } else {
+            Toast.makeText(
+                applicationContext,
+                R.string.not_saved,
+                Toast.LENGTH_SHORT
+            ).show()
         }
     }
 }
+
+

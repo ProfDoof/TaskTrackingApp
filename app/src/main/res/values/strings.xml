@@ -1,4 +1,8 @@
 <resources>
     <string name="app_name">TaskTrackingActivity</string>
     <string name="action_settings">Settings</string>
+    <string name="hint_task_name">Task Name&#8230;</string>
+    <string name="hint_task_desc">Task Description&#8230;</string>
+    <string name="button_task_save">Save</string>
+    <string name="not_saved">Task was not saved.</string>
 </resources>
