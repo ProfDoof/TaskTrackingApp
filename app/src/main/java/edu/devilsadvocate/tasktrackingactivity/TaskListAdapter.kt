@@ -14,7 +14,8 @@ class TaskListAdapter internal constructor(
     private var tasks = emptyList<Task>()
 
     inner class TaskViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
-        val taskItemView: TextView = itemView.findViewById(R.id.textView)
+        val taskItemTitle: TextView = itemView.findViewById(R.id.textTitle)
+        val taskItemDescription: TextView = itemView.findViewById(R.id.textDescription)
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): TaskViewHolder {
@@ -24,7 +25,8 @@ class TaskListAdapter internal constructor(
 
     override fun onBindViewHolder(holder: TaskViewHolder, position: Int) {
         val current = tasks[position]
-        holder.taskItemView.text = current.taskName
+        holder.taskItemTitle.text = current.taskName
+        holder.taskItemDescription.text = current.taskDescription
     }
 
     internal fun setTasks(tasks: List<Task>) {
