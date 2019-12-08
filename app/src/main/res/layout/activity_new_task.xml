@@ -28,6 +28,16 @@
         android:layout_marginTop="@dimen/big_padding"
         android:textSize="18sp" />
 
+    <EditText
+        android:id="@+id/datePicker"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:ems="10"
+        android:hint="--/--/----"
+        android:inputType="none"
+        android:focusable="false"
+        android:cursorVisible="false" />
+
     <Button
         android:id="@+id/button_save"
         android:layout_width="match_parent"
