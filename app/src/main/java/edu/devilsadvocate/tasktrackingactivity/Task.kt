@@ -20,5 +20,8 @@ data class Task (
     var taskCompletionStatus: Boolean,
 
     @ColumnInfo(name = "taskTargetCompletionDate")
-    var taskTargetCompletionDate: Date
+    var taskTargetCompletionDate: Date,
+
+    @ColumnInfo(name = "taskTimeToCompletionInMinutes")
+    var taskTimeToCompletionInMinutes: Int
 )
