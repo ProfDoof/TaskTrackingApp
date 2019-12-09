@@ -29,7 +29,7 @@
         android:textSize="18sp" />
 
     <EditText
-        android:id="@+id/datePicker"
+        android:id="@+id/date_picker"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:cursorVisible="false"
@@ -37,6 +37,14 @@
         android:focusable="false"
         android:hint="@string/hint_task_date"
         android:inputType="none" />
+
+    <EditText
+        android:id="@+id/num_minutes_to_finish"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:ems="10"
+        android:hint="Number of Minutes to Finish"
+        android:inputType="number" />
 
     <Button
         android:id="@+id/button_save"

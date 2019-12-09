@@ -9,7 +9,7 @@ import java.time.Instant
 import java.time.LocalDateTime
 import java.util.*
 
-@Database(entities = arrayOf(Task::class), version = 1, exportSchema = false)
+@Database(entities = arrayOf(Task::class), version = 2, exportSchema = false)
 @TypeConverters(Converters::class)
 public abstract class TaskRoomDatabase : RoomDatabase() {
     abstract fun taskDao(): TaskDao
@@ -28,7 +28,7 @@ public abstract class TaskRoomDatabase : RoomDatabase() {
             taskDao.deleteAll()
 
             var task = Task(id = null, taskName = "Test Task", taskDescription = "Testing out the task", taskCompletionStatus = false, taskTargetCompletionDate = Date.from(
-                Instant.now()))
+                Instant.now()), taskTimeToCompletionInMinutes = 5)
             taskDao.insert(task)
 
         }
@@ -49,7 +49,7 @@ public abstract class TaskRoomDatabase : RoomDatabase() {
                         context.applicationContext,
                         TaskRoomDatabase::class.java,
                         "task_database"
-                    ).addCallback(TaskDatabaseCallback(scope)).build()
+                    ).addCallback(TaskDatabaseCallback(scope)).fallbackToDestructiveMigration().build()
 
                 INSTANCE = instance
                 return instance

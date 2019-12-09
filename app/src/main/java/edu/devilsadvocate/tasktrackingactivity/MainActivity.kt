@@ -45,8 +45,9 @@ class MainActivity : AppCompatActivity() {
             data?.run {
                 val taskName = getStringExtra(NewTaskActivity.EXTRA_TASK_NAME)
                 val taskDesc = getStringExtra(NewTaskActivity.EXTRA_TASK_DESC)
-                val task = Task(id = null, taskName = taskName ?: "", taskDescription = taskDesc ?: "", taskCompletionStatus = false, taskTargetCompletionDate = Date.from(
-                    Instant.now()))
+                val taskTargetDate: Date = Date(getLongExtra(NewTaskActivity.EXTRA_TASK_TARGET_DATE, 0))
+                val taskTimeToCompletion = getIntExtra(NewTaskActivity.EXTRA_TASK_TIME_TO_COMPLETION, 0)
+                val task = Task(id = null, taskName = taskName ?: "", taskDescription = taskDesc ?: "", taskCompletionStatus = false, taskTargetCompletionDate = taskTargetDate, taskTimeToCompletionInMinutes = taskTimeToCompletion)
                 taskViewModel.run {
                     insert(task)
                 }
