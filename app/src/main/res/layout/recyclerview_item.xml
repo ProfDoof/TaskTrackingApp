@@ -32,6 +32,7 @@
             android:id="@+id/textTitle"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:maxLines="1"
             android:text="Task title"
             android:textColor="@android:color/black"
             android:textSize="18sp"
@@ -41,7 +42,9 @@
             android:id="@+id/textDescription"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:maxLines="1"
             android:text="Short description preview"
+            android:textAllCaps="false"
             android:textSize="16sp" />
     </LinearLayout>
 

@@ -32,11 +32,11 @@
         android:id="@+id/datePicker"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:cursorVisible="false"
         android:ems="10"
-        android:hint="--/--/----"
-        android:inputType="none"
         android:focusable="false"
-        android:cursorVisible="false" />
+        android:hint="@string/hint_task_date"
+        android:inputType="none" />
 
     <Button
         android:id="@+id/button_save"
