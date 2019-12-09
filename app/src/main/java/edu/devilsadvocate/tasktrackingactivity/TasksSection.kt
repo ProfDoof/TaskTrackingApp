@@ -4,19 +4,25 @@ import android.view.View
 import android.widget.TextView
 import androidx.annotation.NonNull
 import androidx.recyclerview.widget.RecyclerView
+import edu.devilsadvocate.tasktrackingactivity.ItemTouchHelpers.ItemTouchHelperAdapter
 import io.github.luizgrp.sectionedrecyclerviewadapter.Section
 import io.github.luizgrp.sectionedrecyclerviewadapter.SectionParameters
 
 class TasksSection(
     @NonNull val title: String,
-    @NonNull val tasks: List<Task>,
+    @NonNull val tasks: MutableList<Task>,
     @NonNull val clickListener: ClickListener):
     Section(
         SectionParameters.builder()
             .itemResourceId(R.layout.recyclerview_item)
             .headerResourceId(R.layout.section_header)
             .build()
-    ) {
+    ),
+    ItemTouchHelperAdapter {
+
+    fun getTaskAt(adapterPosition: Int) : Task {
+        return tasks[adapterPosition]
+    }
 
     override fun getContentItemsTotal() = tasks.size
 
@@ -33,6 +39,7 @@ class TasksSection(
             holder.taskRootView.setOnClickListener {
                 clickListener.onItemRootViewClicked(title, holder.adapterPosition)
             }
+            holder.title = this.title
         }
     }
 
@@ -45,11 +52,24 @@ class TasksSection(
             holder.headerTitle.text = title
     }
 
+    override fun onItemDismiss(sectionTitle: String, position: Int) : Boolean {
+        if (this.title != sectionTitle)
+            return false
+
+        clickListener.onTaskCompletion(tasks[position-1])
+        return true
+    }
+
+    override fun onItemMove(fromPosition: Int, toPosition: Int): Boolean {
+        return false
+    }
+
     inner class TaskViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         val taskItemTitle: TextView = itemView.findViewById(R.id.textTitle)
         val taskItemDescription: TextView = itemView.findViewById(R.id.textDescription)
         val taskItemTime: TextView = itemView.findViewById(R.id.textTime)
         val taskRootView: View = itemView.findViewById(R.id.item_root_view)
+        var title: String? = null
     }
 
     inner class HeaderViewHolder(headerView: View) : RecyclerView.ViewHolder(headerView) {
@@ -60,6 +80,10 @@ class TasksSection(
         fun onItemRootViewClicked(
             sectionTitle: String,
             itemAdapterPosition: Int
+        )
+
+        fun onTaskCompletion(
+            task: Task
         )
     }
 }

@@ -8,7 +8,9 @@ import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
+import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.LinearLayoutManager
+import edu.devilsadvocate.tasktrackingactivity.ItemTouchHelpers.SimpleItemTouchHelperCallback
 import kotlinx.android.synthetic.main.activity_main.*
 import io.github.luizgrp.sectionedrecyclerviewadapter.SectionedRecyclerViewAdapter;
 import java.util.*
@@ -17,6 +19,7 @@ class MainActivity : AppCompatActivity(), TasksSection.ClickListener {
 
     private lateinit var taskViewModel: TaskViewModel
     private lateinit var sectionedAdapter: SectionedRecyclerViewAdapter
+    private var itemTouchHelper: ItemTouchHelper? = null
 
     private val newTaskActivityRequestCode = 1
 
@@ -61,16 +64,24 @@ class MainActivity : AppCompatActivity(), TasksSection.ClickListener {
         }
     }
 
-    fun generateSectionedRecyclerView(tasks: List<Task>) {
+    private fun generateSectionedRecyclerView(tasks: List<Task>) {
         val splitTasks = tasks.groupBy { it.taskTargetCompletionDate }.toSortedMap()
+        val adaptersList: MutableList<TasksSection> = emptyList<TasksSection>().toMutableList()
         sectionedAdapter = SectionedRecyclerViewAdapter()
 
         for (split in splitTasks) {
-            sectionedAdapter.addSection(TasksSection(split.key.toString(), split.value, this))
+            val taskSection: TasksSection = TasksSection(split.key.toString(), split.value.toMutableList(), this)
+            adaptersList.add(taskSection)
+            sectionedAdapter.addSection(taskSection)
         }
 
+        val callback: ItemTouchHelper.Callback = SimpleItemTouchHelperCallback(adaptersList)
+        if (itemTouchHelper != null)
+            itemTouchHelper?.attachToRecyclerView(null)
+        itemTouchHelper = ItemTouchHelper(callback)
         recyclerview.adapter = sectionedAdapter
         recyclerview.layoutManager = LinearLayoutManager(this)
+        itemTouchHelper?.attachToRecyclerView(recyclerview)
     }
 
     override fun onItemRootViewClicked(sectionTitle: String, itemAdapterPosition: Int) {
@@ -83,6 +94,10 @@ class MainActivity : AppCompatActivity(), TasksSection.ClickListener {
             ),
             Toast.LENGTH_SHORT
         ).show();
+    }
+
+    override fun onTaskCompletion(task: Task) {
+        taskViewModel.complete(task)
     }
 }
 

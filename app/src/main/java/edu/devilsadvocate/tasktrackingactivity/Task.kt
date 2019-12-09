@@ -8,7 +8,7 @@ import java.util.*
 @Entity(tableName = "task_table")
 data class Task (
     @PrimaryKey(autoGenerate = true)
-    var id: Int? = null,
+    val id: Int? = null,
 
     @ColumnInfo(name = "taskName")
     var taskName: String,

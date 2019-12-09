@@ -11,7 +11,7 @@ import java.util.*
 @Dao
 interface TaskDao {
 
-    @Query("SELECT * FROM task_table") //WHERE taskTargetCompletionDate = date
+    @Query("SELECT * FROM task_table WHERE taskCompletionStatus = 0") //WHERE taskTargetCompletionDate = date
     fun getTasksOrderedByDate(): LiveData<List<Task>> //(date: Date)
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
