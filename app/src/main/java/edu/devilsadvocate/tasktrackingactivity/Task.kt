@@ -1,6 +1,5 @@
 package edu.devilsadvocate.tasktrackingactivity
 
-import android.app.ActivityManager
 import androidx.room.ColumnInfo
 import androidx.room.Entity
 import androidx.room.PrimaryKey
@@ -9,7 +8,7 @@ import java.util.*
 @Entity(tableName = "task_table")
 data class Task (
     @PrimaryKey(autoGenerate = true)
-    var id: Int?,
+    var id: Int? = null,
 
     @ColumnInfo(name = "taskName")
     var taskName: String,
