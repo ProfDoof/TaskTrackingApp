@@ -16,6 +16,7 @@ class TaskListAdapter internal constructor(
     inner class TaskViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         val taskItemTitle: TextView = itemView.findViewById(R.id.textTitle)
         val taskItemDescription: TextView = itemView.findViewById(R.id.textDescription)
+        val taskItemTime: TextView = itemView.findViewById(R.id.textTime)
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): TaskViewHolder {
@@ -27,6 +28,7 @@ class TaskListAdapter internal constructor(
         val current = tasks[position]
         holder.taskItemTitle.text = current.taskName
         holder.taskItemDescription.text = current.taskDescription
+        holder.taskItemTime.text = current.taskTimeToCompletionInMinutes.toString() + " min"
     }
 
     internal fun setTasks(tasks: List<Task>) {
