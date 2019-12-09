@@ -6,21 +6,20 @@ import android.content.Intent
 import android.icu.util.Calendar
 import android.os.Bundle
 import android.text.TextUtils
-import android.view.View
-import android.view.inputmethod.InputMethodManager
-import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import kotlinx.android.synthetic.main.activity_new_task.*
+import java.time.LocalDate
+import java.time.ZoneId
 import java.util.*
 
 class NewTaskActivity : AppCompatActivity() {
 
-    var targetDate: Date? = null
+    private var targetDate: Date? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_new_task)
-
+        
         button_save.setOnClickListener {
             val replyIntent = Intent()
             val isEditTaskNameEmpty = TextUtils.isEmpty(edit_task_name.text)
@@ -42,11 +41,12 @@ class NewTaskActivity : AppCompatActivity() {
         }
 
         date_picker.setOnClickListener {
-            clickDataPicker(it)
+            clickDataPicker()
         }
     }
 
-    fun clickDataPicker(view: View) {
+    @SuppressWarnings("unused")
+    private fun clickDataPicker() {
         val c = Calendar.getInstance()
         val year = c.get(Calendar.YEAR)
         val month = c.get(Calendar.MONTH)
@@ -54,7 +54,8 @@ class NewTaskActivity : AppCompatActivity() {
 
         val dpd = DatePickerDialog(this, DatePickerDialog.OnDateSetListener { _, yearSelected, monthOfYear, dayOfMonth ->
             date_picker.setText("""${monthOfYear + 1}/$dayOfMonth/$yearSelected""")
-            targetDate = Date(yearSelected, monthOfYear+1, dayOfMonth)
+            targetDate = Date.from(LocalDate.of(yearSelected, monthOfYear+1, dayOfMonth).atStartOfDay(
+                ZoneId.systemDefault()).toInstant())
         }, year, month, day)
         dpd.show()
     }

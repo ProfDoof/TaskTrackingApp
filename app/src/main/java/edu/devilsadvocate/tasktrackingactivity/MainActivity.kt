@@ -3,18 +3,20 @@ package edu.devilsadvocate.tasktrackingactivity
 import android.app.Activity
 import android.content.Intent
 import android.os.Bundle
+import android.view.View
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import kotlinx.android.synthetic.main.activity_main.*
-import java.time.Instant
+import io.github.luizgrp.sectionedrecyclerviewadapter.SectionedRecyclerViewAdapter;
 import java.util.*
 
-class MainActivity : AppCompatActivity() {
+class MainActivity : AppCompatActivity(), TasksSection.ClickListener {
 
     private lateinit var taskViewModel: TaskViewModel
+    private lateinit var sectionedAdapter: SectionedRecyclerViewAdapter
 
     private val newTaskActivityRequestCode = 1
 
@@ -22,14 +24,12 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
-        val adapter = TaskListAdapter(this)
-        recyclerview.adapter = adapter
-        recyclerview.layoutManager = LinearLayoutManager(this)
+        generateSectionedRecyclerView(emptyList())
 
         taskViewModel = ViewModelProvider(this).get(TaskViewModel::class.java)
 
         taskViewModel.allTasks.observe(this, Observer { tasks ->
-            tasks?.let { adapter.setTasks(it) }
+            tasks?.let { generateSectionedRecyclerView(it) }
         })
 
         fab_add_new_task.setOnClickListener {
@@ -59,6 +59,30 @@ class MainActivity : AppCompatActivity() {
                 Toast.LENGTH_SHORT
             ).show()
         }
+    }
+
+    fun generateSectionedRecyclerView(tasks: List<Task>) {
+        val splitTasks = tasks.groupBy { it.taskTargetCompletionDate }.toSortedMap()
+        sectionedAdapter = SectionedRecyclerViewAdapter()
+
+        for (split in splitTasks) {
+            sectionedAdapter.addSection(TasksSection(split.key.toString(), split.value, this))
+        }
+
+        recyclerview.adapter = sectionedAdapter
+        recyclerview.layoutManager = LinearLayoutManager(this)
+    }
+
+    override fun onItemRootViewClicked(sectionTitle: String, itemAdapterPosition: Int) {
+        Toast.makeText(
+            this,
+            String.format(
+                "Clicked on position #%s of Section %s",
+                sectionedAdapter.getPositionInSection(itemAdapterPosition),
+                sectionTitle
+            ),
+            Toast.LENGTH_SHORT
+        ).show();
     }
 }
 
