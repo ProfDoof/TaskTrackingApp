@@ -12,6 +12,7 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.LinearLayoutManager
 import edu.devilsadvocate.tasktrackingactivity.ItemTouchHelpers.SimpleItemTouchHelperCallback
+import edu.devilsadvocate.tasktrackingactivity.Models.TitleModel
 import kotlinx.android.synthetic.main.activity_main.*
 import io.github.luizgrp.sectionedrecyclerviewadapter.SectionedRecyclerViewAdapter;
 import java.util.*
@@ -71,7 +72,8 @@ class MainActivity : AppCompatActivity(), TasksSection.ClickListener {
         sectionedAdapter = SectionedRecyclerViewAdapter()
 
         for (split in splitTasks) {
-            val taskSection: TasksSection = TasksSection(split.key.toString(), split.value.toMutableList(), this)
+            val summedMinutes: Int = split.value.sumBy { it.taskTimeToCompletionInMinutes }
+            val taskSection: TasksSection = TasksSection(TitleModel(split.key.toString(), summedMinutes), split.value.toMutableList(), this)
             adaptersList.add(taskSection)
             sectionedAdapter.addSection(taskSection)
         }
