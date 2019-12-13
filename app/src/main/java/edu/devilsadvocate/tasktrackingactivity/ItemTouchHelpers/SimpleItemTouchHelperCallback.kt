@@ -32,10 +32,9 @@ class SimpleItemTouchHelperCallback(val adapters: List<ItemTouchHelperAdapter>):
     }
 
     override fun onSwiped(viewHolder: RecyclerView.ViewHolder, direction: Int) {
-        Log.println(Log.WARN, "Testing", "Testing")
         if (viewHolder is TasksSection.TaskViewHolder) {
             for (adapter in adapters) {
-                if (adapter.onItemDismiss(viewHolder.title ?: "", viewHolder.adapterPosition))
+                if (adapter.onItemDismiss(viewHolder.title ?: "", viewHolder.id ?: -1))
                     break
             }
         }
