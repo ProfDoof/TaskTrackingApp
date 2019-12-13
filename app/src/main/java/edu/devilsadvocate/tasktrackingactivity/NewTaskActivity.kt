@@ -19,7 +19,7 @@ class NewTaskActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_new_task)
-        
+
         button_save.setOnClickListener {
             val replyIntent = Intent()
             val isEditTaskNameEmpty = TextUtils.isEmpty(edit_task_name.text)
