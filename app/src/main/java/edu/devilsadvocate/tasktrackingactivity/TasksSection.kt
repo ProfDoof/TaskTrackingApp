@@ -5,11 +5,12 @@ import android.widget.TextView
 import androidx.annotation.NonNull
 import androidx.recyclerview.widget.RecyclerView
 import edu.devilsadvocate.tasktrackingactivity.ItemTouchHelpers.ItemTouchHelperAdapter
+import edu.devilsadvocate.tasktrackingactivity.Models.TitleModel
 import io.github.luizgrp.sectionedrecyclerviewadapter.Section
 import io.github.luizgrp.sectionedrecyclerviewadapter.SectionParameters
 
 class TasksSection(
-    @NonNull val title: String,
+    @NonNull val titleModel: TitleModel,
     @NonNull val tasks: MutableList<Task>,
     @NonNull val clickListener: ClickListener):
     Section(
@@ -33,9 +34,9 @@ class TasksSection(
             holder.taskItemDescription.text = current.taskDescription
             holder.taskItemTime.text = current.taskTimeToCompletionInMinutes.toString() + " min"
             holder.taskRootView.setOnClickListener {
-                clickListener.onItemRootViewClicked(title, holder.adapterPosition)
+                clickListener.onItemRootViewClicked(titleModel.title, holder.adapterPosition)
             }
-            holder.title = this.title
+            holder.title = this.titleModel.title
             holder.id = current.id
         }
     }
@@ -46,12 +47,13 @@ class TasksSection(
 
     override fun onBindHeaderViewHolder(holder: RecyclerView.ViewHolder?) {
         if(holder is HeaderViewHolder){
-            holder.headerTitle.text = title.substring(0,10)
+            holder.headerTitle.text = titleModel.title.substring(0,10)
+            holder.headerTime.text = titleModel.summedMinutes.toString() + " minutes"
         }
     }
 
     override fun onItemDismiss(sectionTitle: String, itemId: Int) : Boolean {
-        if (this.title != sectionTitle)
+        if (this.titleModel.title != sectionTitle)
             return false
 
         val indexOfItem: Int = tasks.indexOfFirst { itemId == it.id }
