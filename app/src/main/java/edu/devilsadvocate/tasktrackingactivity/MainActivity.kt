@@ -4,6 +4,7 @@ import android.app.Activity
 import android.content.Intent
 import android.os.Bundle
 import android.view.View
+import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.Observer
@@ -85,15 +86,15 @@ class MainActivity : AppCompatActivity(), TasksSection.ClickListener {
     }
 
     override fun onItemRootViewClicked(sectionTitle: String, itemAdapterPosition: Int) {
-        Toast.makeText(
-            this,
-            String.format(
-                "Clicked on position #%s of Section %s",
-                sectionedAdapter.getPositionInSection(itemAdapterPosition),
-                sectionTitle
-            ),
-            Toast.LENGTH_SHORT
-        ).show();
+        //Toast.makeText(
+        //    this,
+        //   String.format(
+        //       "Clicked on position #%s of Section %s",
+        //       sectionedAdapter.getPositionInSection(itemAdapterPosition),
+        //        sectionTitle
+        //   ),
+        //    Toast.LENGTH_SHORT
+        //).show()
     }
 
     override fun onTaskCompletion(task: Task) {

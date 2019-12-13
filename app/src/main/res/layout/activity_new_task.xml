@@ -8,25 +8,16 @@
         android:id="@+id/edit_task_name"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:fontFamily="sans-serif-light"
-        android:hint="@string/hint_task_name"
-        android:inputType="textAutoComplete"
-        android:padding="@dimen/small_padding"
-        android:layout_marginBottom="@dimen/big_padding"
         android:layout_marginTop="@dimen/big_padding"
-        android:textSize="18sp" />
+        android:hint="@string/hint_task_name"
+        android:inputType="textAutoComplete" />
 
     <EditText
         android:id="@+id/edit_task_desc"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:fontFamily="sans-serif-light"
         android:hint="@string/hint_task_desc"
-        android:inputType="textAutoComplete"
-        android:padding="@dimen/small_padding"
-        android:layout_marginBottom="@dimen/big_padding"
-        android:layout_marginTop="@dimen/big_padding"
-        android:textSize="18sp" />
+        android:inputType="textAutoComplete" />
 
     <EditText
         android:id="@+id/date_picker"
@@ -43,13 +34,14 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:ems="10"
-        android:hint="Number of Minutes to Finish"
+        android:hint="Minutes to complete"
         android:inputType="number" />
 
     <Button
         android:id="@+id/button_save"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
         android:background="@color/colorPrimary"
         android:text="@string/button_task_save"
         android:textColor="@color/buttonLabel" />

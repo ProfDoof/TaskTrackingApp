@@ -27,7 +27,7 @@ public abstract class TaskRoomDatabase : RoomDatabase() {
         suspend fun populateDatabase(taskDao: TaskDao) {
             taskDao.deleteAll()
 
-            var task = Task(id = null, taskName = "Test Task", taskDescription = "Testing out the task", taskCompletionStatus = false, taskTargetCompletionDate = Date.from(
+            var task = Task(id = null, taskName = "Here's a task", taskDescription = "Swipe the task to dismiss it", taskCompletionStatus = false, taskTargetCompletionDate = Date.from(
                 Instant.now()), taskTimeToCompletionInMinutes = 5)
             taskDao.insert(task)
 

@@ -48,8 +48,9 @@ class TasksSection(
     }
 
     override fun onBindHeaderViewHolder(holder: RecyclerView.ViewHolder?) {
-        if(holder is HeaderViewHolder)
-            holder.headerTitle.text = title
+        if(holder is HeaderViewHolder){
+            holder.headerTitle.text = title.substring(0,10)
+        }
     }
 
     override fun onItemDismiss(sectionTitle: String, position: Int) : Boolean {
@@ -74,6 +75,7 @@ class TasksSection(
 
     inner class HeaderViewHolder(headerView: View) : RecyclerView.ViewHolder(headerView) {
         val headerTitle: TextView = headerView.findViewById(R.id.headerTitle)
+        val headerTime: TextView = headerView.findViewById(R.id.headerTime)
     }
 
     interface ClickListener {
