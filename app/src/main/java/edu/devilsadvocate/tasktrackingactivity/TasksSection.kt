@@ -20,10 +20,6 @@ class TasksSection(
     ),
     ItemTouchHelperAdapter {
 
-    fun getTaskAt(adapterPosition: Int) : Task {
-        return tasks[adapterPosition]
-    }
-
     override fun getContentItemsTotal() = tasks.size
 
     override fun getItemViewHolder(view: View): RecyclerView.ViewHolder {
@@ -40,6 +36,7 @@ class TasksSection(
                 clickListener.onItemRootViewClicked(title, holder.adapterPosition)
             }
             holder.title = this.title
+            holder.id = current.id
         }
     }
 
@@ -53,11 +50,16 @@ class TasksSection(
         }
     }
 
-    override fun onItemDismiss(sectionTitle: String, position: Int) : Boolean {
+    override fun onItemDismiss(sectionTitle: String, itemId: Int) : Boolean {
         if (this.title != sectionTitle)
             return false
 
-        clickListener.onTaskCompletion(tasks[position-1])
+        val indexOfItem: Int = tasks.indexOfFirst { itemId == it.id }
+
+        if (indexOfItem == -1)
+            return false
+
+        clickListener.onTaskCompletion(tasks[indexOfItem])
         return true
     }
 
@@ -71,6 +73,7 @@ class TasksSection(
         val taskItemTime: TextView = itemView.findViewById(R.id.textTime)
         val taskRootView: View = itemView.findViewById(R.id.item_root_view)
         var title: String? = null
+        var id: Int? = null
     }
 
     inner class HeaderViewHolder(headerView: View) : RecyclerView.ViewHolder(headerView) {
